@@ -1,12 +1,20 @@
+import importlib.util
 import os
 import sys
 
-_PLUGIN_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if _PLUGIN_ROOT not in sys.path:
-    sys.path.append(_PLUGIN_ROOT)
-
 from helpers.api import ApiHandler, Request, Response
-from langfuse_helpers.langfuse_helper import get_langfuse_client
+
+
+def _lib(name):
+    key = f"_lf_lib_{name}"
+    if key in sys.modules:
+        return sys.modules[key]
+    lib_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "extensions", "python", "lib", f"{name}.py")
+    spec = importlib.util.spec_from_file_location(key, lib_path)
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules[key] = mod
+    spec.loader.exec_module(mod)
+    return mod
 
 
 class LangfuseTrace(ApiHandler):
@@ -16,7 +24,7 @@ class LangfuseTrace(ApiHandler):
         if not trace_id:
             return {"success": False, "error": "trace_id is required"}
 
-        client = get_langfuse_client()
+        client = _lib("langfuse_helper").get_langfuse_client()
         if not client:
             return {"success": False, "error": "Langfuse is not configured"}
 

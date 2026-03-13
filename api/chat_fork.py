@@ -1,13 +1,21 @@
+import importlib.util
 import os
 import sys
 
-_PLUGIN_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if _PLUGIN_ROOT not in sys.path:
-    sys.path.append(_PLUGIN_ROOT)
-
 from helpers.api import ApiHandler, Input, Output, Request, Response
-from langfuse_helpers.fork_helper import fork_context
 from agent import AgentContext
+
+
+def _lib(name):
+    key = f"_lf_lib_{name}"
+    if key in sys.modules:
+        return sys.modules[key]
+    lib_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "extensions", "python", "lib", f"{name}.py")
+    spec = importlib.util.spec_from_file_location(key, lib_path)
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules[key] = mod
+    spec.loader.exec_module(mod)
+    return mod
 
 
 class ChatFork(ApiHandler):
@@ -27,7 +35,7 @@ class ChatFork(ApiHandler):
             fork_at_log_no = int(fork_at_log_no)
 
         try:
-            new_context = fork_context(source, fork_at_log_no=fork_at_log_no)
+            new_context = _lib("fork_helper").fork_context(source, fork_at_log_no=fork_at_log_no)
         except Exception as e:
             return {"success": False, "error": f"Fork failed: {e}"}
 
