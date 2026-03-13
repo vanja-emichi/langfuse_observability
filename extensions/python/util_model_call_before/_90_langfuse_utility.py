@@ -48,14 +48,17 @@ class LangfuseUtilityGeneration(Extension):
         full_input = system_msg + "\n" + user_msg
         input_tokens = approximate_tokens(full_input) if full_input.strip() else 0
 
-        generation = parent.generation(
-            name="utility-llm",
-            model=model_name,
-            input=prompt_text or None,
-            metadata={
-                "agent_number": self.agent.number,
-                "call_type": "utility",
-            },
-        )
-        loop_data.params_temporary["lf_utility_gen"] = generation
-        loop_data.params_temporary["lf_utility_input_tokens"] = input_tokens
+        try:
+            generation = parent.generation(
+                name="utility-llm",
+                model=model_name,
+                input=prompt_text or None,
+                metadata={
+                    "agent_number": self.agent.number,
+                    "call_type": "utility",
+                },
+            )
+            loop_data.params_temporary["lf_utility_gen"] = generation
+            loop_data.params_temporary["lf_utility_input_tokens"] = input_tokens
+        except Exception:
+            pass

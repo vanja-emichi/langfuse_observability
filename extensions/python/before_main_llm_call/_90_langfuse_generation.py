@@ -69,14 +69,17 @@ class LangfuseGenerationStart(Extension):
         if isinstance(ctx_window, dict):
             input_tokens = int(ctx_window.get("tokens", 0))
 
-        generation = parent.generation(
-            name="main-llm",
-            model=model_name,
-            input=prompt_text or None,
-            metadata={
-                "agent_number": self.agent.number,
-                "iteration": loop_data.iteration,
-            },
-        )
-        loop_data.params_temporary["lf_generation"] = generation
-        loop_data.params_temporary["lf_input_tokens"] = input_tokens
+        try:
+            generation = parent.generation(
+                name="main-llm",
+                model=model_name,
+                input=prompt_text or None,
+                metadata={
+                    "agent_number": self.agent.number,
+                    "iteration": loop_data.iteration,
+                },
+            )
+            loop_data.params_temporary["lf_generation"] = generation
+            loop_data.params_temporary["lf_input_tokens"] = input_tokens
+        except Exception:
+            pass

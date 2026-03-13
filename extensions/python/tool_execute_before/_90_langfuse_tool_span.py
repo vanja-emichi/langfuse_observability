@@ -19,9 +19,12 @@ class LangfuseToolSpanStart(Extension):
             val_str = str(v)
             args_summary[k] = val_str[:500] if len(val_str) > 500 else val_str
 
-        span = parent.span(
-            name=f"tool-{tool_name}" if tool_name else "tool-unknown",
-            input=args_summary,
-            metadata={"tool_name": tool_name},
-        )
-        loop_data.params_temporary["lf_tool_span"] = span
+        try:
+            span = parent.span(
+                name=f"tool-{tool_name}" if tool_name else "tool-unknown",
+                input=args_summary,
+                metadata={"tool_name": tool_name},
+            )
+            loop_data.params_temporary["lf_tool_span"] = span
+        except Exception:
+            pass
