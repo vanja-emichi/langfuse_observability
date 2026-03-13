@@ -12,7 +12,7 @@ class LangfuseIterationStart(Extension):
         if not trace:
             return
 
-        span = trace.start_span(
+        span = trace.span(
             name=f"iteration-{loop_data.iteration}",
             metadata={"iteration": loop_data.iteration},
         )

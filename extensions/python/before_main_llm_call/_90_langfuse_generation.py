@@ -69,7 +69,7 @@ class LangfuseGenerationStart(Extension):
         if isinstance(ctx_window, dict):
             input_tokens = int(ctx_window.get("tokens", 0))
 
-        generation = parent.start_generation(
+        generation = parent.generation(
             name="main-llm",
             model=model_name,
             input=prompt_text or None,

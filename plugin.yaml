@@ -1,3 +1,4 @@
+name: langfuse_observability
 title: Langfuse Observability
 description: Langfuse tracing, trace viewer, chat forking, prompt lab, and split-screen comparison.
 version: 1.0.0

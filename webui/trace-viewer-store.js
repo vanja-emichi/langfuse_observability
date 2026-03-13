@@ -74,7 +74,7 @@ const model = {
     this.selectedObsId = null;
 
     try {
-      const resp = await globalThis.fetchApi("/plugins/langfuse-observability/chat_logs", {
+      const resp = await globalThis.fetchApi("/plugins/langfuse_observability/chat_logs", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ context_id: contextId, log_from: 0 }),
@@ -125,7 +125,7 @@ const model = {
     this.selectedObsId = null;
 
     try {
-      const resp = await globalThis.fetchApi("/plugins/langfuse-observability/langfuse_trace", {
+      const resp = await globalThis.fetchApi("/plugins/langfuse_observability/langfuse_trace", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ trace_id: traceId }),
@@ -230,7 +230,7 @@ const model = {
       });
     }
 
-    globalThis.openModal("/usr/plugins/langfuse-observability/webui/prompt-lab.html");
+    globalThis.openModal("/usr/plugins/langfuse_observability/webui/prompt-lab.html");
   },
 
   getObservation(obsId) {

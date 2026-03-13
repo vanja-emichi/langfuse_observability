@@ -19,7 +19,7 @@ class LangfuseUtilityGenerationEnd(Extension):
         try:
             update_kwargs = {"output": response}
             if input_tokens or output_tokens:
-                update_kwargs["usage_details"] = {
+                update_kwargs["usage"] = {
                     "input": int(input_tokens),
                     "output": int(output_tokens),
                 }

@@ -2,7 +2,7 @@ import { createStore } from "/js/AlpineStore.js";
 import { sendJsonData, justToast, toast, toastFetchError } from "/index.js";
 
 // Plugin API prefix
-const API = "/plugins/langfuse-observability";
+const API = "/plugins/langfuse_observability";
 
 const model = {
   // Original prompt data (read-only, from trace observation)
@@ -187,7 +187,7 @@ const model = {
     if (chatsStore) {
       chatsStore.selectChat(this.testForkedContextId);
     }
-    window.closeModal("/usr/plugins/langfuse-observability/webui/prompt-lab.html");
+    window.closeModal("/usr/plugins/langfuse_observability/webui/prompt-lab.html");
   },
 
   compareInSplitView() {
@@ -201,7 +201,7 @@ const model = {
       return;
     }
     // Close the prompt lab modal, then open split view
-    window.closeModal("/usr/plugins/langfuse-observability/webui/prompt-lab.html");
+    window.closeModal("/usr/plugins/langfuse_observability/webui/prompt-lab.html");
     splitView.openSplit(
       this.sourceContextId,
       this.testForkedContextId,

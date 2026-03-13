@@ -35,7 +35,7 @@ class LangfuseTraceStart(Extension):
                 parent_span = superior.loop_data.params_persistent.get("lf_trace")
 
             if parent_span:
-                span = parent_span.start_span(
+                span = parent_span.span(
                     name=f"agent-{agent.number}-monologue",
                     metadata={"agent_number": agent.number},
                 )
@@ -46,21 +46,17 @@ class LangfuseTraceStart(Extension):
                 )
                 return
 
-        # Top-level agent: create a root span (v3 creates trace implicitly)
+        # Top-level agent: create a root trace (Langfuse v2 API)
         user_msg = ""
         if loop_data.user_message:
             user_msg = str(loop_data.user_message.content)
 
-        root_span = client.start_span(
+        root_trace = client.trace(
             name=f"agent-{agent.number}-monologue",
             input=user_msg,
-            metadata={"agent_number": agent.number},
-        )
-        # Set trace-level metadata (session_id, etc.)
-        root_span.update_trace(
             session_id=context_id,
             metadata={"agent_number": agent.number},
         )
-        loop_data.params_persistent["lf_trace"] = root_span
-        loop_data.params_persistent["lf_root_trace"] = root_span
-        loop_data.params_persistent["lf_trace_id"] = root_span.trace_id
+        loop_data.params_persistent["lf_trace"] = root_trace
+        loop_data.params_persistent["lf_root_trace"] = root_trace
+        loop_data.params_persistent["lf_trace_id"] = root_trace.trace_id

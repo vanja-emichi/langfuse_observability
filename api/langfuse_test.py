@@ -22,7 +22,7 @@ class LangfuseTest(ApiHandler):
 
         # If frontend sent the masked placeholder, use the real stored key
         if secret_key == _SECRET_PLACEHOLDER:
-            config = get_plugin_config("langfuse-observability", None) or {}
+            config = get_plugin_config("langfuse_observability", None) or {}
             secret_key = config.get("langfuse_secret_key", "")
 
         if not public_key or not secret_key:

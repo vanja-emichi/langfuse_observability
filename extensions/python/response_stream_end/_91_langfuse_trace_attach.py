@@ -6,8 +6,8 @@ if _PLUGIN_ROOT not in sys.path:
     sys.path.append(_PLUGIN_ROOT)
 
 from helpers.extension import Extension
-from langfuse_helpers.langfuse_helper import get_langfuse_client
 from agent import LoopData
+
 
 
 class LangfuseTraceAttach(Extension):
@@ -24,12 +24,12 @@ class LangfuseTraceAttach(Extension):
         if not log_item:
             return
 
-        # Build Langfuse trace URL
+        # Build Langfuse trace URL using the root trace object (v2 API)
         trace_url = ""
-        client = get_langfuse_client()
-        if client:
+        root_trace = loop_data.params_persistent.get("lf_root_trace") or loop_data.params_persistent.get("lf_trace")
+        if root_trace:
             try:
-                trace_url = client.get_trace_url(trace_id=trace_id) or ""
+                trace_url = root_trace.get_trace_url() or ""
             except Exception:
                 pass
 

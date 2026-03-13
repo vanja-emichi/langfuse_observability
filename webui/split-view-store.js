@@ -2,7 +2,7 @@ import { createStore } from "/js/AlpineStore.js";
 import { callJsonApi } from "/js/api.js";
 
 // Plugin API prefix
-const API = "/plugins/langfuse-observability";
+const API = "/plugins/langfuse_observability";
 const POLL_INTERVAL_MS = 2000;
 
 const model = {

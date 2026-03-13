@@ -48,7 +48,7 @@ class LangfuseUtilityGeneration(Extension):
         full_input = system_msg + "\n" + user_msg
         input_tokens = approximate_tokens(full_input) if full_input.strip() else 0
 
-        generation = parent.start_generation(
+        generation = parent.generation(
             name="utility-llm",
             model=model_name,
             input=prompt_text or None,

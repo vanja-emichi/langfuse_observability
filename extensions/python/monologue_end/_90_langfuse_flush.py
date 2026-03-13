@@ -26,7 +26,6 @@ class LangfuseFlush(Extension):
                 trace.update(
                     output=loop_data.last_response[:2000] if loop_data.last_response else "",
                 )
-                trace.end()
             except Exception:
                 pass
 
