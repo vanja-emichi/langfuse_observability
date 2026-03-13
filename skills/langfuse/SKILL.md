@@ -51,14 +51,14 @@ Always run this before any CLI call:
 ```bash
 # Auto-load credentials from plugin config.json
 eval $(python3 -c "
-import json, os
-cfg_path = '/a0/usr/projects/langfuse_observability_plugin/config.json'
+import json
+cfg_path = '/a0/usr/plugins/langfuse_observability/config.json'
 try:
     with open(cfg_path) as f:
         cfg = json.load(f)
-    pk = cfg.get('langfuse_public_key') or os.getenv('LANGFUSE_PUBLIC_KEY', '')
-    sk = cfg.get('langfuse_secret_key') or os.getenv('LANGFUSE_SECRET_KEY', '')
-    host = cfg.get('langfuse_host') or os.getenv('LANGFUSE_HOST', 'https://cloud.langfuse.com')
+    pk = cfg.get('langfuse_public_key', '')
+    sk = cfg.get('langfuse_secret_key', '')
+    host = cfg.get('langfuse_host', 'https://cloud.langfuse.com')
     print(f\"export LANGFUSE_PUBLIC_KEY={pk}\")
     print(f\"export LANGFUSE_SECRET_KEY={sk}\")
     print(f\"export LANGFUSE_HOST={host}\")
