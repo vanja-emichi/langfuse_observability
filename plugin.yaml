@@ -2,6 +2,7 @@ name: langfuse_observability
 title: Langfuse Observability
 description: Langfuse tracing, trace viewer, chat forking, prompt lab, and split-screen comparison.
 version: 1.0.0
+note: "Requires Python langfuse package and Node.js. Enable the plugin and click Initialize to install dependencies automatically."
 settings_sections:
   - agent
 per_project_config: false
