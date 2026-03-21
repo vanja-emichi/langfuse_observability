@@ -85,6 +85,24 @@ def initialize(plugin_dir: str = None) -> bool:
                 log.error("npm install langfuse-cli failed: %s", err)
                 success = False
 
+    # ── Step 3: Ensure consistent OpenTelemetry versions ────────────────────
+    print("\n📦 Step 3: Aligning OpenTelemetry dependencies...")
+    otel_packages = [
+        "opentelemetry-api",
+        "opentelemetry-sdk",
+        "opentelemetry-exporter-otlp-proto-http",
+        "opentelemetry-semantic-conventions",
+    ]
+    rc, out, err = _run(
+        [sys.executable, "-m", "pip", "install", "--quiet", "--upgrade"] + otel_packages,
+        timeout=180,
+    )
+    if rc == 0:
+        print("✅ OpenTelemetry packages aligned — resource detector warnings suppressed.")
+    else:
+        print(f"⚠️  OpenTelemetry upgrade warning (non-fatal):\n{err[-300:]}")
+        log.warning("OTel upgrade warning: %s", err)
+
     # ── Summary ───────────────────────────────────────────────────────────────
     print()
     if success:
