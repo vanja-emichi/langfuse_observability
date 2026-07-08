@@ -20,6 +20,7 @@ Send LLM observability data to Langfuse with real token/cost data. Uses a **corr
 - `extensions/python/monologue_start/_90_langfuse_trace.py` — root AGENT trace creation, subordinate linking via `trace_context` with `parent_span_id`; includes agent profile name in observation name and metadata (e.g., `agent-1-researcher-monologue`)
 - `extensions/python/monologue_end/_90_langfuse_flush.py` — trace output, context manager cleanup, flush, clear context, skill tags + feature tags
 - `extensions/python/monologue_end/_20_langfuse_judge.py` — LLM-as-a-Judge (sampled, disabled by default)
+- `extensions/python/monologue_end/_30_langfuse_dataset.py` — auto-export successful traces as Langfuse dataset items (disabled by default)
 - `extensions/python/message_loop_start/_90_langfuse_iteration.py` — AGENT iteration observation, stores span_id in contextvar, reads loaded skills from agent context for trace tagging
 - `extensions/python/message_loop_end/_90_langfuse_iteration_end.py` — ends iteration AGENT, clears span_id
 - `extensions/python/tool_execute_before/_90_langfuse_tool.py` — TOOL observation with filtered args
@@ -40,8 +41,9 @@ Send LLM observability data to Langfuse with real token/cost data. Uses a **corr
 - `extensions/webui/set_messages_after_loop/feedback-buttons.js` — feedback buttons UI
 - `webui/config.html` — settings UI
 - `tests/test_langfuse_plugin.py` — 174 unit tests across 33 test classes
+- `tests/test_dataset_export.py` — 15 unit tests across 2 test classes (dataset export function + hook)
 - `tests/conftest.py` — sys.path setup
-- `skills/langfuse/` — Langfuse assistant skill (SKILL.md + 8 reference files)
+- `skills/langfuse/` — Langfuse assistant skill (SKILL.md + 9 reference files)
 
 **Disabled:** `extensions/python/_functions/helpers/log/LogItem.bak/` — LogItem.update() fires per streaming token, cannot be filtered to decision-only; agent thoughts are captured in GENERATION observation output/metadata instead
 
@@ -74,6 +76,7 @@ The Langfuse SDK creates traces/observations via its own OTel pipeline. LLM GENE
 ### Active Feature Set
 
 - **LLM-as-a-Judge**: sampled quality scoring (disabled by default)
+- **Dataset export**: auto-export successful traces as dataset items for experiments (disabled by default)
 - **Prompt sync**: bidirectional prompt management (disabled by default)
 - **Rate/retry tracking**: wraps rate limiters and transport for retry scores
 - **Feedback API**: thumbs up/down with server-side message→trace mapping
@@ -124,9 +127,9 @@ The Langfuse SDK creates traces/observations via its own OTel pipeline. LLM GENE
 |-------|-------|
 | `extensions/python/lib/` | Core client singleton (~1540 lines), LangfuseGenerationLogger, _StreamingGenerationWrapper, config, contextvars, cost calculation, all scoring/tracking functions |
 | `extensions/python/_shared.py` | Shared `lib()` dynamic import helper |
-| `extensions/python/` (hooks) | 14 lifecycle extension hooks: agent_init, monologue_start/2, monologue_end/2, message_loop_start/end, tool_execute_before/after, util_model_call_before/after, error_format, hist_add_before, process_chain_end, system_prompt, message_loop_prompts_before |
+| `extensions/python/` (hooks) | 15 lifecycle extension hooks: agent_init, monologue_start/2, monologue_end/3, message_loop_start/end, tool_execute_before/after, util_model_call_before/after, error_format, hist_add_before, process_chain_end, system_prompt, message_loop_prompts_before |
 | `extensions/python/_functions/` | Custom function hooks: Log/log/end (narrative tap), handle_exception/end (raw-exception scoring), handle_intervention/end (intervention scoring), hist_add_ai_response/end (feedback target) |
 | `api/` | REST API endpoint for user feedback |
 | `webui/` + `extensions/webui/` | Settings UI + feedback buttons |
-| `tests/` | 174 unit tests across 33 test classes + conftest |
-| `skills/langfuse/` | Langfuse assistant skill — SKILL.md + 8 reference files |
+| `tests/` | 189 unit tests across 35 test classes + conftest |
+| `skills/langfuse/` | Langfuse assistant skill — SKILL.md + 9 reference files |

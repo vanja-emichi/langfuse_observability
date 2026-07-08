@@ -69,6 +69,25 @@
                         <input type="text" x-model="config.langfuse_environment"
                                placeholder="production" class="input">
                     </div>
+                    <div class="field">
+                        <div class="field-label">
+                            <div class="field-title">Dataset Export</div>
+                            <div class="field-description">Auto-export successful traces as dataset items for experiments in Langfuse UI</div>
+                            <div class="switch">
+                                <input type="checkbox" x-model="config.langfuse_dataset_export_enabled">
+                                <span class="slider"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field" x-show="config.langfuse_dataset_export_enabled" x-cloak>
+                        <div class="field-label">
+                            <div class="field-title">Dataset Name</div>
+                            <div class="field-description">Langfuse dataset to export items to (auto-created if it doesn't exist)</div>
+                        </div>
+                        <input type="text" x-model="config.langfuse_dataset_name"
+                               placeholder="a0-traces" class="input">
+                    </div>
                 </div>
             </div>
         </template>

@@ -680,6 +680,38 @@ def add_feature_tags(trace_id: str, tool_names: list) -> None:
 
 
 # ---------------------------------------------------------------------------
+# Dataset Export
+# ---------------------------------------------------------------------------
+
+def export_dataset_item(
+    dataset_name: str,
+    input_data,
+    expected_output,
+    trace_id: str,
+    metadata=None,
+) -> None:
+    """Export a trace as a dataset item for future experiments. Never raises."""
+    try:
+        if not dataset_name or not trace_id:
+            return
+        client = get_client()
+        if not client:
+            return
+        client.create_dataset_item(
+            dataset_name=dataset_name,
+            input=input_data,
+            expected_output=expected_output,
+            source_trace_id=trace_id,
+            metadata=metadata or {},
+        )
+        logger.debug(
+            f"Dataset item exported to '{dataset_name}' from trace {trace_id[:12]}"
+        )
+    except Exception as e:
+        logger.debug(f"Dataset item export failed: {e}")
+
+
+# ---------------------------------------------------------------------------
 # Gap 2: Rate Limiting & Retry Tracking
 # ---------------------------------------------------------------------------
 

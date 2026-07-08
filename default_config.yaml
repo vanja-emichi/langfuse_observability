@@ -13,3 +13,6 @@ langfuse_prompt_override_mode: "prepend"
 # Task 11: LLM-as-a-Judge
 langfuse_judge_enabled: false
 langfuse_judge_sample_rate: 0.0
+# Dataset export: auto-export successful traces as test cases
+langfuse_dataset_export_enabled: false
+langfuse_dataset_name: "a0-traces"
