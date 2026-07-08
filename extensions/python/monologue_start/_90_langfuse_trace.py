@@ -98,6 +98,13 @@ class LangfuseTraceStart(Extension):
             root_obs = obs_cm.__enter__()
 
             trace_id = client.get_current_trace_id()
+
+            # Fix trace-level input to show user message (not system prompt from OTel propagation)
+            try:
+                client.set_current_trace_io(input={"role": "user", "content": user_msg[:5000]})
+            except Exception:
+                pass
+
             loop_data.params_persistent["lf_prop_cm"] = prop_cm
             loop_data.params_persistent["lf_obs_cm"] = obs_cm
             loop_data.params_persistent["lf_root_obs"] = root_obs

@@ -24,6 +24,11 @@ class LangfuseInit(Extension):
 
     def execute(self, **kwargs):
         try:
-            _lib("langfuse_client").get_client()
+            lf = _lib("langfuse_client")
+            client = lf.get_client()
+            # Validate credentials at startup
+            if client:
+                client.auth_check()
+                logger.info("Langfuse auth check passed")
         except Exception as e:
-            logger.debug(f"Langfuse init failed: {e}")
+            logger.warning(f"Langfuse auth check failed: {e}")
