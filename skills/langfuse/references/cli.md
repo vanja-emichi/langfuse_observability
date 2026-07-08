@@ -133,6 +133,20 @@ npx langfuse-cli api observations list --fields "core,basic" | python3 /tmp/anal
 
 The `<< 'PYEOF'` (single-quoted heredoc) prevents bash from expanding `$`, quotes, and backslashes inside the script.
 
+### scores list: no `sessionId` filter — use 2-step for session scores
+
+The scores API only supports filtering by `traceId`, not by `sessionId`. To get all scores for a session, first fetch trace IDs, then batch-query scores per trace:
+
+```bash
+# Step 1: Get all trace IDs for the session
+npx langfuse-cli api traces list \
+  --filter '[{"type":"string","column":"sessionId","operator":"=","value":"SESSION_ID"}]'
+
+# Step 2: For each trace ID, fetch scores
+npx langfuse-cli api scores list \
+  --filter '[{"type":"string","column":"traceId","operator":"=","value":"TRACE_ID"}]'
+```
+
 ### Ready-to-use: Full trace analysis query
 
 ```bash
