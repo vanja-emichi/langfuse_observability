@@ -102,6 +102,37 @@ npx langfuse-cli api scores list \
 
 This applies to any v2 endpoint that supports `--filter`: prefer the structured JSON filter over simple query parameter flags.
 
+### Processing CLI output in Python: avoid `python3 -c` in bash pipes
+
+When formatting CLI JSON output through Python, **do not** use `| python3 -c "..."` in a bash terminal. Bash strips single quotes inside double quotes, so Python dict lookups like `s.get('name')` arrive as `s.get(name)` — bare identifiers that cause `SyntaxError`.
+
+**Recommended approaches:**
+
+```python
+# Option A: Use code_execution_tool with runtime: python (no shell quoting)
+import subprocess, json
+r = subprocess.run(
+    ["npx", "langfuse-cli", "api", "observations", "list",
+     "--fields", "core,basic,model,usage",
+     "--filter", '[{"type":"string","column":"traceId","operator":"=","value":"TRACE_ID"}]'],
+    capture_output=True, text=True, env=env_vars, timeout=60
+)
+data = json.loads(r.stdout)
+```
+
+```bash
+# Option B: Write script to file with single-quoted heredoc, then execute
+cat > /tmp/analyze.py << 'PYEOF'
+import json, sys
+data = json.load(sys.stdin)
+for o in data.get('data', []):
+    print(o.get('name', '?'))
+PYEOF
+npx langfuse-cli api observations list --fields "core,basic" | python3 /tmp/analyze.py
+```
+
+The `<< 'PYEOF'` (single-quoted heredoc) prevents bash from expanding `$`, quotes, and backslashes inside the script.
+
 ### Ready-to-use: Full trace analysis query
 
 ```bash
