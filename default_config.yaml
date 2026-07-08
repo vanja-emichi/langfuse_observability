@@ -1,0 +1,15 @@
+langfuse_enabled: false
+langfuse_public_key: ""
+langfuse_secret_key: ""
+langfuse_host: "https://cloud.langfuse.com"
+langfuse_sample_rate: 1.0
+langfuse_flush_at: 15
+langfuse_flush_interval: 5.0
+langfuse_environment: "production"
+# Task 10: Prompt Sync Bridge
+langfuse_prompt_sync_enabled: false
+langfuse_prompt_override_enabled: false
+langfuse_prompt_override_mode: "prepend"
+# Task 11: LLM-as-a-Judge
+langfuse_judge_enabled: false
+langfuse_judge_sample_rate: 0.0

@@ -1,0 +1,13 @@
+config.json
+__pycache__/
+*.pyc
+*.pyo
+.toggle-*
+.env
+.env.*
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg-info/
+dist/
+build/

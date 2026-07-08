@@ -1,0 +1,77 @@
+<html>
+<head>
+    <title>Langfuse Observability</title>
+</head>
+<body>
+    <div x-data>
+        <template x-if="config">
+            <div>
+                <div class="section">
+                    <div class="section-title">Langfuse</div>
+                    <div class="section-description">
+                        Trace LLM calls, tool executions, and agent interactions.
+                        Credentials can also be set via LANGFUSE_PUBLIC_KEY,
+                        LANGFUSE_SECRET_KEY, and LANGFUSE_HOST environment variables.
+                    </div>
+
+                    <div class="field">
+                        <div class="field-label">
+                            <div class="field-title">Enable Langfuse Tracing</div>
+                            <div class="field-description">Send traces to your Langfuse instance</div>
+                            <div class="switch">
+                                <input type="checkbox" x-model="config.langfuse_enabled">
+                                <span class="slider"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="field-label">
+                            <div class="field-title">Public Key</div>
+                            <div class="field-description">Your Langfuse project public key (pk-lf-...)</div>
+                        </div>
+                        <input type="text" x-model="config.langfuse_public_key"
+                               placeholder="pk-lf-..." class="input">
+                    </div>
+
+                    <div class="field">
+                        <div class="field-label">
+                            <div class="field-title">Secret Key</div>
+                            <div class="field-description">Your Langfuse project secret key (sk-lf-...)</div>
+                        </div>
+                        <input type="password" x-model="config.langfuse_secret_key"
+                               placeholder="sk-lf-..." class="input">
+                    </div>
+
+                    <div class="field">
+                        <div class="field-label">
+                            <div class="field-title">Host</div>
+                            <div class="field-description">Langfuse instance URL</div>
+                        </div>
+                        <input type="text" x-model="config.langfuse_host"
+                               placeholder="https://cloud.langfuse.com" class="input">
+                    </div>
+
+                    <div class="field">
+                        <div class="field-label">
+                            <div class="field-title">Sample Rate</div>
+                            <div class="field-description">Fraction of traces to send (0.0 to 1.0)</div>
+                        </div>
+                        <input type="number" x-model.number="config.langfuse_sample_rate"
+                               min="0" max="1" step="0.1" class="input">
+                    </div>
+
+                    <div class="field">
+                        <div class="field-label">
+                            <div class="field-title">Environment</div>
+                            <div class="field-description">Tracing environment. Must match LiteLLM's environment for trace merging. Auto-detects from A0 runtime mode if left as 'production'.</div>
+                        </div>
+                        <input type="text" x-model="config.langfuse_environment"
+                               placeholder="production" class="input">
+                    </div>
+                </div>
+            </div>
+        </template>
+    </div>
+</body>
+</html>

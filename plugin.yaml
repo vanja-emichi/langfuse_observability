@@ -1,0 +1,8 @@
+name: a0_langfuse
+title: Langfuse Observability
+description: Send LLM traces, tool spans, and agent interactions to Langfuse with real token and cost data.
+version: 1.0.0
+note: "Requires Python langfuse>=4.0.0 package. Enable the plugin and click Initialize to install automatically."
+settings_sections:
+  - agent
+always_enabled: false
