@@ -8,6 +8,12 @@ Send LLM observability data to Langfuse with real token/cost data. Uses a **corr
 
 **v3 narrative tap (2026-07-07):** Single tap on `Log.log()` captures all 15 A0 event types as EVENT observations. Requires `@extensible` on `Log.log()` in `helpers/log.py` (A0 core). Filters noisy types (`progress`, `info`, `hint`, `response`) and empty entries.
 
+## Knowledge
+
+- **Owning KB:** none dedicated — catalog entry in `~/knowledge/agent_zero_plugins` (② Tool). Promote to a dedicated KB if this plugin grows substantial durable knowledge (Hub placement rule #7).
+- **Access:** OpenKnowledge MCP only — `cwd: ~/knowledge/agent_zero_plugins`. Tools: `exec`, `search`, `write`, `edit`, `audit`, `lint`. Never `lsp` on KB markdown.
+- **Fleet index:** `vanja-emichi/vbunjevac` → `registry/repos.md`.
+
 ## Ownership
 
 - `plugin.yaml` — manifest; `default_config.yaml` — defaults; `.toggle-1` — enabled; `.gitignore` — protects `config.json`, `.env`, build artifacts; `config.json` (gitignored) — user configuration
